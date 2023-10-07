@@ -35,7 +35,7 @@ class MNISTDataIssues(DataIssues):
             v2.Normalize((0.1307,), (0.3081,)),
         ]
     )
-    DATA_PATH = "./data/"
+    DATA_PATH = "../data/"
 
     train_dataset = MNIST(
         root=DATA_PATH,
