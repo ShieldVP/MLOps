@@ -1,0 +1,8 @@
+MLOps/__pycache__
+.idea
+venv
+MLOps/outputs/*
+MLOps/weights/*
+
+!MLOps/outputs/.gitkeep
+!MLOps/weights/.gitkeep
