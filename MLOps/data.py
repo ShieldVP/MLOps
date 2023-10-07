@@ -1,8 +1,9 @@
-from torch.utils.data import Dataset, DataLoader
-from torchvision.datasets import MNIST
-import torchvision.transforms as transforms
-from torchvision.transforms import v2
 import abc
+
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader, Dataset
+from torchvision.datasets import MNIST
+from torchvision.transforms import v2
 
 
 class DataIssues(abc.ABC):
@@ -34,7 +35,7 @@ class MNISTDataIssues(DataIssues):
             v2.Normalize((0.1307,), (0.3081,)),
         ]
     )
-    DATA_PATH = './data/'
+    DATA_PATH = "./data/"
 
     train_dataset = MNIST(
         root=DATA_PATH,
