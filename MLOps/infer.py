@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import accuracy_score
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from data import MNISTDataIssues
 from model import ConvNet
@@ -21,7 +22,7 @@ def apply_model(
     model.to(device)
     model.eval()
     with torch.inference_mode():
-        for images, labels in dataloader:
+        for images, labels in tqdm(dataloader):
             outputs = model(images.to(device))
             _, pred_classes = torch.max(outputs.cpu(), dim=1)
             preds.append(pred_classes)

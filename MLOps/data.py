@@ -1,6 +1,8 @@
 import abc
+from pathlib import Path
 
 import torchvision.transforms as transforms
+from dvc.api import DVCFileSystem
 from torch.utils.data import DataLoader, Dataset
 from torchvision.datasets import MNIST
 from torchvision.transforms import v2
@@ -35,18 +37,26 @@ class MNISTDataIssues(DataIssues):
             v2.Normalize((0.1307,), (0.3081,)),
         ]
     )
-    DATA_PATH = "../data/"
 
+    root_dir = Path("/Users/yabatrakov/Desktop/MLOps")
+    data_dir = Path("data")
+    mnist_dir = data_dir / "MNIST"
+    if not mnist_dir.exists():
+        dvc_filesystem = DVCFileSystem(str(root_dir))
+        dvc_filesystem.get(str(mnist_dir), str(data_dir), recursive=True)
+
+    abs_data_dir = str(root_dir / "data")
     train_dataset = MNIST(
-        root=DATA_PATH,
+        root=abs_data_dir,
         train=True,
         transform=transform,
-        download=True,
+        download=False,
     )
     test_dataset = MNIST(
-        root=DATA_PATH,
+        root=abs_data_dir,
         train=False,
         transform=transform,
+        download=False,
     )
 
     BATCH_SIZE = 8

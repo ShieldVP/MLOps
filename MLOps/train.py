@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 from torch.nn.modules.loss import _Loss
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from data import MNISTDataIssues
 from model import ConvNet
@@ -24,11 +25,12 @@ class Trainer:
         self.model.to(self.device)
         self.model.train()
         for epoch in range(self.epochs):
+            print(f"Epoch #{epoch + 1}")
             self.train_loop()
         torch.save(self.model.state_dict(), save_model_path)
 
     def train_loop(self):
-        for images, labels in self.dataloader:
+        for images, labels in tqdm(self.dataloader):
             outputs = self.model(images.to(self.device))
             loss = self.criterion(outputs, labels.to(self.device))
             self.optimizer.zero_grad()
