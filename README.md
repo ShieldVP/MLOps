@@ -6,11 +6,14 @@ Project for MLOps course
 ```
 git clone https://github.com/ShieldVP/MLOps.git
 cd MLOps
-python -m venv venv
+
+python3.9 -m venv venv
 source venv/bin/activate
 poetry install
 pre-commit install
+
 pre-commit run -a
+
 python MLOps/train.py
 python MLOps/infer.py
 ```
