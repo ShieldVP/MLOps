@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from configs.configs import DataConfig, ModelConfig
+from configs.config import DataConfig, ModelConfig
 
 
 class ConvNet(nn.Module):

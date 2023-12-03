@@ -1,9 +1,11 @@
 from typing import Dict, Tuple
 
+import hydra
 import pandas as pd
 import torch
 import torch.nn as nn
-from configs.configs import DataConfig, InferConfig, ModelConfig
+from configs.config import AllConfigs, DataConfig, InferConfig, ModelConfig
+from hydra.core.config_store import ConfigStore
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -35,18 +37,23 @@ def compute_metrics(preds: torch.Tensor, answers: torch.Tensor) -> Dict[str, flo
     return {metric.__name__: metric(answers, preds) for metric in METRICS}
 
 
-def main():
-    infer_cfg = InferConfig()
-    data_cfg = DataConfig()
-    model_cfg = ModelConfig()
+cs = ConfigStore.instance()
+cs.store(name="infer", node=InferConfig)
+cs.store(name="data", node=DataConfig)
+cs.store(name="model", node=ModelConfig)
 
-    trained_model = ConvNet(model_cfg, data_cfg)
-    trained_model.load_state_dict(torch.load(infer_cfg.weights_path))
-    test_dataloader = MNISTDataIssues(data_cfg).create_test_dataloader()
 
-    predictions, real_answers = apply_model(trained_model, test_dataloader, infer_cfg)
+@hydra.main(config_path="../configs", config_name="config", version_base="1.3.2")
+def main(cfg: AllConfigs):
+    trained_model = ConvNet(cfg.model_config, cfg.data_config)
+    trained_model.load_state_dict(torch.load(cfg.infer_config.weights_path))
+    test_dataloader = MNISTDataIssues(cfg.data_config).create_test_dataloader()
 
-    pd.Series(predictions).to_csv(infer_cfg.outputs_path)
+    predictions, real_answers = apply_model(
+        trained_model, test_dataloader, cfg.infer_config
+    )
+
+    pd.Series(predictions).to_csv(cfg.infer_config.outputs_path)
     metrics = compute_metrics(predictions, real_answers)
     print(metrics)
 

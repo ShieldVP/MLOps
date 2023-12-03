@@ -1,0 +1,28 @@
+train_config:
+    experiment_name: "Experiment name"
+    weights_path: "weights/checkpoint.pt"
+    device: "cuda:0"
+    epochs: 2
+    tracking_uri: "http://127.0.0.1:8080"
+
+infer_config:
+    weights_path: "weights/checkpoint.pt"
+    device: "cuda:0"
+    outputs_path: "outputs/predictions.csv"
+
+data_config:
+    data_dir: "data"
+    image_size: 28
+    channels: 1
+    num_classes: 10
+    channels_mean: 0.1307
+    channels_std: 0.3081
+    batch_size: 8
+
+model_config:
+    max_channels: 64
+    conv_kernel: 5
+    conv_stride: 1
+    conv_padding: 2
+    pool_kernel: 2
+    pool_stride: 2

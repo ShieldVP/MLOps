@@ -3,7 +3,7 @@ from pathlib import Path
 
 import torch
 import torchvision.transforms as transforms
-from configs.configs import DataConfig
+from configs.config import DataConfig
 from dvc.api import DVCFileSystem
 from torch.utils.data import DataLoader, Dataset
 from torchvision.datasets import MNIST
